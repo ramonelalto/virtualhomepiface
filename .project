@@ -1,0 +1,26 @@
+# Gambas Project File 3.0
+# Compiled with Gambas 3.1.1
+Title=VirtualHome 1.0
+Startup=FrmServer
+Icon=udpsocket.png
+Version=1.0.5
+Component=gb.image
+Component=gb.gui
+Component=gb.net
+Description="Aplicación de hogar virtual para el módulo de \nSistemas Integrados y Hogar DIgital\nen el IES Pacífico\npor: Ramón Rodríguez Luque"
+Authors="Ramón Rodríguez Luque"
+TabSize=2
+Translate=1
+Language=es
+ExecPath=VirtualHome.Piface.RRL.2.0.gambas
+SourcePath=/home/ramon/Desktop/piface_virtualhome/virtualhome_piface_2.1
+Maintainer=Ramón
+Address=ramon.rodriguez@educa.madrid.org
+Url=http://platea.pntic.mec.es/rrodrigu/
+License=General Public Licence
+PackageName=virtualhome5-3.0
+CreateEachDirectory=1
+Packager=1
+Systems=ubuntu
+Menus=ubuntu:"Applications/Programming"
+Groups=ubuntu:"electronics"

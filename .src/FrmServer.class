@@ -1,0 +1,794 @@
+' Gambas class file
+
+Static Public variableVolumetrico1 As Integer
+Static Public variableVolumetrico2 As Integer
+Static Public variableVolumetrico3 As Integer
+Static Public variableVolumetrico4 As Integer
+Static Public variableVolumetrico5 As Integer
+Static Public variableVolumetrico6 As Integer
+Static Public variableVolumetrico7 As Integer
+Static Public variableVolumetrico8 As Integer
+
+
+
+'PRIVATE UDPServer AS UdpSocket
+Public Sub Button1_Click()
+
+  Dim MyFrm As FrmClient
+  MyFrm = New FrmClient
+  MyFrm.Visible = True
+End
+
+Public UDPClient As UdpSocket
+' Public BCast As New Broadcast 'UDP broadcaster
+
+'//////////////////////////////////////////////////
+' Server Stuff
+'//////////////////////////////////////////////////
+Public Sub Button2_Click()
+
+
+  If (UDPServer.Status <= Net.Inactive And UDPClient.Status <= Net.Inactive) Then
+    UDPServer.Port = CInt(TextBox1.Text)
+    'UDPServer.Path = "/tmp/gambas-udp-server"
+    UDPServer.Bind
+    'UDPClient.Broadcast = True
+    UDPClient.Bind()
+    If (UDPServer.Status = Net.Active And UDPClient.Status = Net.Active)
+      Button2.Text = ("Stop")
+      TextBox1.Enabled = False
+      OpenhabServerPort.Enabled = False
+      OpenhabServerIP.Enabled = False
+           switch1.Enabled = True
+     switch2.Enabled = True
+     switch3.Enabled = True
+     switch4.Enabled = True
+     switch5.Enabled = True
+     switch6.Enabled = True
+     switch7.Enabled = True
+     switch8.Enabled = True
+     switch9.Enabled = True
+     switch10.Enabled = True
+     switch11.Enabled = True
+     switch12.Enabled = True
+     switch13.Enabled = True
+     switch14.Enabled = True
+     switch15.Enabled = True
+     switch16.Enabled = True
+     switch17.Enabled = True
+     switch18.Enabled = True
+     Volumetrico1.Enabled = True
+     Volumetrico2.Enabled = True
+     Volumetrico3.Enabled = True
+     Volumetrico4.Enabled = True
+     Volumetrico5.Enabled = True
+     Volumetrico6.Enabled = True
+     Volumetrico7.Enabled = True
+     Volumetrico8.Enabled = True
+
+
+    End If
+  Else
+    Close #UDPServer
+    Close #UDPClient
+    Button2.Text = ("Start !")
+    TextBox1.Enabled = True
+     OpenhabServerPort.Enabled = True
+     OpenhabServerIP.Enabled = True
+
+      switch1.Enabled = False
+     switch2.Enabled = False
+     switch3.Enabled = False
+     switch4.Enabled = False
+     switch5.Enabled = False
+     switch6.Enabled = False
+     switch7.Enabled = False
+     switch8.Enabled = False
+     switch9.Enabled = False
+     switch10.Enabled = False
+     switch11.Enabled = False
+     switch12.Enabled = False
+     switch13.Enabled = False
+     switch14.Enabled = False
+     switch15.Enabled = False
+     switch16.Enabled = False
+     switch17.Enabled = False
+     switch18.Enabled = False
+     Volumetrico1.Enabled = False
+     Volumetrico2.Enabled = False
+     Volumetrico3.Enabled = False
+     Volumetrico4.Enabled = False
+     Volumetrico5.Enabled = False
+     Volumetrico6.Enabled = False
+     Volumetrico7.Enabled = False
+     Volumetrico8.Enabled = False
+
+
+     
+       End If    
+
+End
+
+'PUBLIC SUB Form_Open()
+'
+'  UDPServer = NEW UdpSocket AS "UDPServer"
+'
+'END
+
+Public Sub Form_Close()
+
+  If UDPServer.Status > 0 Then Close #UDPServer
+
+End
+
+Public Sub UDPServer_Error()
+  
+  Button2.Text = "Start !"
+  TextBox1.Enabled = True
+  Select Case UDPServer.Status
+    Case Net.CannotBindSocket
+      Message.Error(("Unable to Bind to that port"))
+    Case Net.CannotCreateSocket
+      Message.Error(("System does not allow to create a socket"))
+    Case Net.CannotRead
+      Message.Error(("Error Sending Data"))
+    Case Net.CannotWrite
+      Message.Error(("Error Receiving Data"))
+  End Select
+  
+End
+
+Public Sub SendPacketReply(Command As Byte, Pin As Byte, Value As Byte)
+  Dim A As String
+  Dim Paquete_a_enviar As Byte[] = [0, 0, 0]
+  'A = Chr(Command) & Chr(Pin) & Chr(Value)
+   Paquete_a_enviar[0] = Command
+   Paquete_a_enviar[1] = Pin
+   Paquete_a_enviar[2] = Value
+   
+   A = Paquete_a_enviar.ToString(0, 3)
+  Print "Enviando: " & A
+  UDPCLient.TargetPort = UDPServer.SourcePort
+  UDPCLient.TargetHost = UDPServer.SourceHost
+  'UDPClient.SourcePort = 32002
+  'UDPClient.TargetPath = "/tmp/gambas-udp-socket"
+  Write #UDPCLient, A, 3
+  'BCast.Send(OpenhabServerPort.Text, A)
+  End
+
+
+
+Public Sub UDPServer_Read()
+  
+  Dim sCadRet As String
+  Dim sCad As String
+  Dim MyLoop As Integer 
+  Dim Comando As Byte
+  Dim Pin As Byte
+  Dim Valor As Byte
+  Dim Paquete As Byte[] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+Dim WRITE_OUT_CMD As Integer = 1
+Dim WRITE_OUT_ACK As Integer = 2
+Dim READ_OUT_CMD As Integer = 3
+Dim READ_OUT_ACK As Integer = 4
+Dim READ_IN_CMD As Integer = 5
+Dim READ_IN_ACK As Integer = 6
+Dim DIGITAL_WRITE_CMD As Integer = 7
+Dim DIGITAL_WRITE_ACK As Integer = 8
+Dim DIGITAL_READ_CMD As Integer = 9
+Dim DIGITAL_READ_ACK As Integer = 10
+Dim WATCHDOG_CMD As Integer = 14
+Dim WATCHDOG_ACK As Integer = 15
+
+  sCadRet = ""
+  Read #UDPServer, sCad, Lof(UDPserver)
+  'Print Comp(sCad, "my2ON" & Chr(13) & Chr(10))
+ ' Print Comp(sCad, "my2OFF" & Chr(13) & Chr(10))
+  '  Print sCad
+   
+   'Print Mid(sCad, 1, 1).Byte
+  ' Print Mid(sCad, 2, 1).Byte
+  ' Print Mid(sCad, 3, 1).Byte
+  ' Paquete.Resize(30)
+  ' 
+  ' 
+   ' Paquete = Paquete.FromString(sCad)
+   ' Comando = Paquete[0]
+   ' Pin = Paquete[1]
+   ' Valor = Paquete[2]
+   ' 
+   ' Select Comando
+   '   Case WRITE_OUT_CMD 
+   '      SendPacketReply(WRITE_OUT_ACK, Pin, Valor)
+   ' 
+   '   Case READ_OUT_CMD
+   '      SendPacketReply(READ_OUT_ACK, Pin, Valor)
+   ' 
+   '   Case READ_IN_CMD
+   '      SendPacketReply(READ_IN_ACK, Pin, Valor)
+   ' 
+   '   Case DIGITAL_WRITE_CMD
+   '      SendPacketReply(DIGITAL_WRITE_ACK, Pin, Valor)
+   '      
+   '      
+   '   Case DIGITAL_READ_CMD
+   '      SendPacketReply(DIGITAL_READ_ACK, Pin, Valor)
+   ' 
+   '   Case WATCHDOG_CMD
+   '      SendPacketReply(WATCHDOG_ACK, Pin, Valor)
+   '     
+   '     
+   ' End Select
+   
+   If (modopiface.Value = False) Then
+   
+       
+   If (Comp(Trim(sCad), "my1ON") = 0) Then 
+   out1.Picture = Picture["light_bulb.png"]
+   Print "ON-1"
+   Endif
+  ' Print sCad
+   
+   If (Comp(Trim(sCad), "my1OFF") = 0) Then 
+   out1.Picture = Picture["OffLamp.png"]
+   Print "OFF-1"
+   Endif
+   
+   If (Comp(Trim(sCad), "my2ON") = 0) Then 
+   out2.Picture = Picture["light_bulb.png"]
+   Print "ON-2"
+   Endif
+  ' Print sCad
+   
+   If (Comp(Trim(sCad), "my2OFF") = 0) Then 
+   out2.Picture = Picture["OffLamp.png"]
+   Print "OFF-2"
+   Endif
+   
+   If (Comp(Trim(sCad), "my3ON") = 0) Then 
+   out3.Picture = Picture["light_bulb.png"]
+   Print "ON-3"
+   Endif
+  ' Print sCad
+   
+   If (Comp(Trim(sCad), "my3OFF") = 0) Then 
+   out3.Picture = Picture["OffLamp.png"]
+   Print "OFF-3"
+   Endif
+   
+    If (Comp(Trim(sCad), "my4ON") = 0) Then 
+   out4.Picture = Picture["light_bulb.png"]
+   Print "ON-4"
+   Endif
+  ' Print sCad
+   
+   If (Comp(Trim(sCad), "my4OFF") = 0) Then 
+   out4.Picture = Picture["OffLamp.png"]
+   Print "OFF-4"
+   Endif
+   
+    If (Comp(Trim(sCad), "my5ON") = 0) Then 
+   out5.Picture = Picture["light_bulb.png"]
+   Print "ON-5"
+   Endif
+  ' Print sCad
+   
+   If (Comp(Trim(sCad), "my5OFF") = 0) Then 
+   out5.Picture = Picture["OffLamp.png"]
+   Print "OFF-5"
+   Endif
+   
+    If (Comp(Trim(sCad), "my6ON") = 0) Then 
+   out6.Picture = Picture["light_bulb.png"]
+   Print "ON-6"
+   Endif
+  ' Print sCad
+   
+   If (Comp(Trim(sCad), "my6OFF") = 0) Then 
+   out6.Picture = Picture["OffLamp.png"]
+   Print "OFF-6"
+   Endif
+   
+   
+   If (Comp(Trim(sCad), "my7ON") = 0) Then 
+   out7.Picture = Picture["light_bulb.png"]
+   Print "ON-7"
+   Endif
+  ' Print sCad
+   
+   If (Comp(Trim(sCad), "my7OFF") = 0) Then 
+   out7.Picture = Picture["OffLamp.png"]
+   Print "OFF-7"
+   Endif
+   
+    If (Comp(Trim(sCad), "my8ON") = 0) Then 
+   out8.Picture = Picture["light_bulb.png"]
+   Print "ON-8"
+   Endif
+  ' Print sCad
+   
+   If (Comp(Trim(sCad), "my8OFF") = 0) Then 
+   out8.Picture = Picture["OffLamp.png"]
+   Print "OFF-8"
+   Endif
+   
+    If (Comp(Trim(sCad), "my9ON") = 0) Then 
+   out9.Picture = Picture["light_bulb.png"]
+   Print "ON-9"
+   Endif
+  ' Print sCad
+   
+   If (Comp(Trim(sCad), "my9OFF") = 0) Then 
+   out9.Picture = Picture["OffLamp.png"]
+   Print "OFF-9"
+   Endif
+   
+   If (Comp(Trim(sCad), "blind1UP") = 0) Then 
+   persiana1.Picture = Picture["persiana_abierta.png"]
+   Print "blind1UP"
+   Endif
+  ' Print sCad
+   
+   If (Comp(Trim(sCad), "blind1DOWN") = 0) Then 
+   persiana1.Picture = Picture["persiana_cerrada.png"]
+   Print "blind1DOWN"
+   Endif
+   
+    If (Comp(Trim(sCad), "blind2UP") = 0) Then 
+   persiana2.Picture = Picture["persiana_abierta.png"]
+   Print "blind1UP"
+   Endif
+  ' Print sCad
+   
+   If (Comp(Trim(sCad), "blind2DOWN") = 0) Then 
+   persiana2.Picture = Picture["persiana_cerrada.png"]
+   Print "blind1DOWN"
+   Endif
+   
+    If (Comp(Trim(sCad), "blind3UP") = 0) Then 
+   persiana3.Picture = Picture["persiana_abierta.png"]
+   Print "blind3UP"
+   Endif
+  ' Print sCad
+   
+   If (Comp(Trim(sCad), "blind3DOWN") = 0) Then
+   persiana3.Picture = Picture["persiana_cerrada.png"]
+   Print "blind3DOWN"
+   Endif
+   
+   If (Comp(Trim(sCad), "sirena") = 0) Then
+   Print "sirena"
+   Endif
+   
+   TextArea1.Text = TextArea1.Text & ("Received data from : ") & UDPServer.SourceHost & ":" & UDPServer.SourcePort & Chr(13) & Chr(10)
+   TextArea1.Text = TextArea1.Text & ("Data --> ") & sCad & Chr(13) & Chr(10)
+   'out2.Picture = Picture["light_bulb.png"]
+ 
+  ' If Len(sCad) > 0 Then
+  '   For myloop = String.Len(sCad) To 1 Step -1
+  '     sCadRet = sCadRet & String.Mid(sCad, myloop, 1)
+  '   Next
+  '   UDPServer.TargetHost = UDPServer.SourceHost
+  '   UDPServer.TargetPort = UDPServer.SourcePort
+    'UDPServer.TargetPath = UDPServer.SourcePath
+    'Write #UDPServer, sCadRet, Len(sCadRet)
+  Else
+    ' Modo Piface
+       Paquete = Paquete.FromString(sCad)
+   Comando = Paquete[0]
+   Pin = Paquete[1]
+   Valor = Paquete[2]
+   
+   Select Comando
+     Case WRITE_OUT_CMD 
+        SendPacketReply(WRITE_OUT_ACK, Pin, Valor)
+
+     Case READ_OUT_CMD
+        SendPacketReply(READ_OUT_ACK, Pin, Valor)
+
+     Case READ_IN_CMD
+        SendPacketReply(READ_IN_ACK, Pin, Valor)
+
+     Case DIGITAL_WRITE_CMD
+        SendPacketReply(DIGITAL_WRITE_ACK, Pin, Valor)
+        Select Pin
+          Case 1
+            If (Valor = 1) Then 
+            out1.Picture = Picture["light_bulb.png"]
+            Else 
+            out1.Picture = Picture["OffLamp.png"]
+            Endif
+
+          Case 2
+            If (Valor = 1) Then 
+            out2.Picture = Picture["light_bulb.png"]
+            Else 
+            out2.Picture = Picture["OffLamp.png"]
+            Endif
+
+          Case 3
+            If (Valor = 1) Then 
+            out3.Picture = Picture["light_bulb.png"]
+            Else 
+            out3.Picture = Picture["OffLamp.png"]
+            Endif
+
+          Case 4
+            If (Valor = 1) Then 
+            out4.Picture = Picture["light_bulb.png"]
+            Else 
+            out4.Picture = Picture["OffLamp.png"]
+            Endif
+
+          Case 5
+            If (Valor = 1) Then 
+            out5.Picture = Picture["light_bulb.png"]
+            Else 
+            out5.Picture = Picture["OffLamp.png"]
+            Endif
+
+          Case 6
+            If (Valor = 1) Then 
+            out6.Picture = Picture["light_bulb.png"]
+            Else 
+            out6.Picture = Picture["OffLamp.png"]
+            Endif
+
+          Case 7
+            If (Valor = 1) Then 
+            out7.Picture = Picture["light_bulb.png"]
+            Else
+            out7.Picture = Picture["OffLamp.png"]
+            Endif
+
+          Case 8
+            If (Valor = 1) Then 
+            out8.Picture = Picture["light_bulb.png"]
+            Else 
+            out8.Picture = Picture["OffLamp.png"]
+            Endif
+
+          Case 9
+            If (Valor = 1) Then 
+            out9.Picture = Picture["light_bulb.png"]
+            Else 
+            out9.Picture = Picture["OffLamp.png"]
+            Endif
+
+          Case 10
+            If (Valor = 1) Then 
+            persiana1.Picture = Picture["persiana_abierta.png"]
+            Else 
+            persiana1.Picture = Picture["persiana_cerrada.png"]
+            Endif
+
+          Case 11
+            If (Valor = 1) Then 
+            persiana2.Picture = Picture["persiana_abierta.png"]
+            Else 
+            persiana2.Picture = Picture["persiana_cerrada.png"]
+            Endif
+
+          Case 12
+            If (Valor = 1) Then 
+            persiana3.Picture = Picture["persiana_abierta.png"]
+            Else 
+            persiana3.Picture = Picture["persiana_cerrada.png"]
+            Endif
+         End Select
+        
+     Case DIGITAL_READ_CMD
+        SendPacketReply(DIGITAL_READ_ACK, Pin, Valor)
+
+     Case WATCHDOG_CMD
+        SendPacketReply(WATCHDOG_ACK, Pin, Valor)
+       
+       
+   End Select
+
+  End If
+  
+End
+
+
+
+Public Sub Form_Open()
+UDPClient = New UdpSocket As "UDPClient"
+     switch1.Enabled = False
+     switch2.Enabled = False
+     switch3.Enabled = False
+     switch4.Enabled = False
+     switch5.Enabled = False
+     switch6.Enabled = False
+     switch7.Enabled = False
+     switch8.Enabled = False
+     switch9.Enabled = False
+     switch10.Enabled = False
+     switch11.Enabled = False
+     switch12.Enabled = False
+     switch13.Enabled = False
+     switch14.Enabled = False
+     switch15.Enabled = False
+     switch16.Enabled = False
+     switch17.Enabled = False
+     switch18.Enabled = False
+     
+     Volumetrico1.Enabled = False
+     Volumetrico2.Enabled = False
+     Volumetrico3.Enabled = False
+     Volumetrico4.Enabled = False
+     Volumetrico5.Enabled = False
+     Volumetrico6.Enabled = False
+     Volumetrico7.Enabled = False
+     Volumetrico8.Enabled = False
+
+
+End
+
+Public Sub ServerSocket1_Connection(RemoteHostIP As String)
+
+  Print "COnected"
+
+End
+
+' Public Sub Button3_Click()
+'   Dim variable As String
+'  variable = "my3OFF" & Chr(13) & Chr(10)
+'  Print Trim(variable)
+'  
+' End
+
+
+Public Sub SendPackettoOpenHAB(CommandMY As String, pin As Byte, value As Byte)
+UDPCLient.TargetPort = OpenhabServerPort.Text
+UDPCLient.TargetHost = OpenhabServerIP.Text
+If (modopiface.Value = True) Then
+      ' Modo Piface
+      Write #UDPCLient, Chr(pin) & Chr(value), 2
+  Else
+      ' Modo clásico UDP
+      If (value = 0) Then
+        Write #UDPCLient, CommandMY, Len(CommandMY)
+      Endif
+  Endif
+End
+
+
+'Public Sub switch1_Click()
+ ' Dim CommandMY As String = "S1"
+ ' Dim pin As Byte = 1
+ ' Dim value As Byte = 0
+ ' SendPackettoOpenHAB("S1", 1, 0)
+  'UDPCLient.TargetPort = OpenhabServerPort.Text
+  'UDPCLient.TargetHost = OpenhabServerIP.Text
+  'If (modopiface.Value == True)
+  'Then
+  'Write #UDPCLient, Chr(18) & Chr(0), 2
+  'Else
+  'Write #UDPCLient, "S1", 2
+  'Endif
+'End
+Public Sub switch1_MouseUp()
+   SendPackettoOpenHAB("S1", 1, 1)
+End
+Public Sub switch1_MouseDown()
+   SendPackettoOpenHAB("S1", 1, 0)
+End
+
+Public Sub switch2_MouseUp()
+   SendPackettoOpenHAB("S2", 2, 1)
+End
+Public Sub switch2_MouseDown()
+   SendPackettoOpenHAB("S2", 2, 0)
+End  
+  
+Public Sub switch3_MouseUp()
+   SendPackettoOpenHAB("S3", 3, 1)
+End
+Public Sub switch3_MouseDown()
+   SendPackettoOpenHAB("S3", 3, 0)
+End    
+
+Public Sub switch4_MouseUp()
+   SendPackettoOpenHAB("S4", 4, 1)
+End
+Public Sub switch4_MouseDown()
+   SendPackettoOpenHAB("S4", 4, 0)
+End  
+
+Public Sub switch5_MouseUp()
+   SendPackettoOpenHAB("S5", 5, 1)
+End
+Public Sub switch5_MouseDown()
+   SendPackettoOpenHAB("S5", 5, 0)
+End  
+
+Public Sub switch6_MouseUp()
+   SendPackettoOpenHAB("S6", 6, 1)
+End
+Public Sub switch6_MouseDown()
+   SendPackettoOpenHAB("S6", 6, 0)
+End  
+
+Public Sub switch7_MouseUp()
+   SendPackettoOpenHAB("S7", 7, 1)
+End
+Public Sub switch7_MouseDown()
+   SendPackettoOpenHAB("S7", 7, 0)
+End 
+
+Public Sub switch8_MouseUp()
+   SendPackettoOpenHAB("S8", 8, 1)
+End
+Public Sub switch8_MouseDown()
+   SendPackettoOpenHAB("S8", 8, 0)
+End  
+
+Public Sub switch9_MouseUp()
+   SendPackettoOpenHAB("S9", 9, 1)
+End
+Public Sub switch9_MouseDown()
+   SendPackettoOpenHAB("S9", 9, 0)
+End  
+
+Public Sub switch10_MouseUp()
+   SendPackettoOpenHAB("S10", 10, 1)
+End
+Public Sub switch10_MouseDown()
+   SendPackettoOpenHAB("S10", 10, 0)
+End  
+
+Public Sub switch11_MouseUp()
+   SendPackettoOpenHAB("S11", 11, 1)
+End
+Public Sub switch11_MouseDown()
+   SendPackettoOpenHAB("S11", 11, 0)
+End
+
+Public Sub switch12_MouseUp()
+   SendPackettoOpenHAB("S12", 12, 1)
+End
+Public Sub switch12_MouseDown()
+   SendPackettoOpenHAB("S12", 12, 0)
+End  
+
+Public Sub switch13_MouseUp()
+   SendPackettoOpenHAB("S13", 13, 1)
+End
+Public Sub switch13_MouseDown()
+   SendPackettoOpenHAB("S13", 13, 0)
+End  
+
+Public Sub switch14_MouseUp()
+   SendPackettoOpenHAB("S14", 14, 1)
+End
+Public Sub switch14_MouseDown()
+   SendPackettoOpenHAB("S14", 14, 0)
+End
+
+Public Sub switch15_MouseUp()
+   SendPackettoOpenHAB("S15", 15, 1)
+End
+Public Sub switch15_MouseDown()
+   SendPackettoOpenHAB("S15", 15, 0)
+End  
+
+Public Sub switch16_MouseUp()
+   SendPackettoOpenHAB("S16", 16, 1)
+End
+Public Sub switch16_MouseDown()
+   SendPackettoOpenHAB("S16", 16, 0)
+End  
+
+Public Sub switch17_MouseUp()
+   SendPackettoOpenHAB("S17", 17, 1)
+End
+Public Sub switch17_MouseDown()
+   SendPackettoOpenHAB("S17", 17, 0)
+End  
+
+Public Sub switch18_MouseUp()
+   SendPackettoOpenHAB("S18", 18, 1)
+End
+Public Sub switch18_MouseDown()
+   SendPackettoOpenHAB("S18", 18, 0)
+End  
+
+
+
+Public Sub Volumetrico1_DblClick()
+    If (variableVolumetrico1 = 0) Then
+        Volumetrico1.Picture = Picture["volumetrico_on.jpg"]
+        SendPackettoOpenHAB("V01ON", 19, 0)
+        variableVolumetrico1 = 1
+      Else
+        Volumetrico1.Picture = Picture["volumetrico.jpg"]
+        SendPackettoOpenHAB("V01OFF", 19, 1)
+        variableVolumetrico1 = 0
+    Endif
+End
+
+Public Sub Volumetrico2_DblClick()
+    If (variableVolumetrico2 = 0) Then
+        Volumetrico2.Picture = Picture["volumetrico_on.jpg"]
+        SendPackettoOpenHAB("V02ON", 20, 0)
+        variableVolumetrico2 = 1
+      Else
+        Volumetrico2.Picture = Picture["volumetrico.jpg"]
+        SendPackettoOpenHAB("V02OFF", 20, 1)
+        variableVolumetrico2 = 0
+    Endif
+End
+
+Public Sub Volumetrico3_DblClick()
+    If (variableVolumetrico3 = 0) Then
+        Volumetrico3.Picture = Picture["volumetrico_on.jpg"]
+        SendPackettoOpenHAB("V03ON", 21, 0)
+        variableVolumetrico3 = 1
+      Else
+        Volumetrico3.Picture = Picture["volumetrico.jpg"]
+        SendPackettoOpenHAB("V03OFF", 21, 1)
+        variableVolumetrico3 = 0
+    Endif
+End
+
+Public Sub Volumetrico4_DblClick()
+    If (variableVolumetrico4 = 0) Then
+        Volumetrico4.Picture = Picture["volumetrico_on.jpg"]
+        SendPackettoOpenHAB("V04ON", 22, 0)
+        variableVolumetrico4 = 1
+      Else
+        Volumetrico4.Picture = Picture["volumetrico.jpg"]
+        SendPackettoOpenHAB("V04OFF", 22, 1)
+        variableVolumetrico4 = 0
+    Endif
+End
+
+Public Sub Volumetrico5_DblClick()
+    If (variableVolumetrico5 = 0) Then
+        Volumetrico5.Picture = Picture["volumetrico_on.jpg"]
+        SendPackettoOpenHAB("V05ON", 23, 0)
+        variableVolumetrico5 = 1
+      Else
+        Volumetrico5.Picture = Picture["volumetrico.jpg"]
+        SendPackettoOpenHAB("V05OFF", 23, 1)
+        variableVolumetrico5 = 0
+    Endif
+End
+
+Public Sub Volumetrico6_DblClick()
+    If (variableVolumetrico6 = 0) Then
+        Volumetrico6.Picture = Picture["volumetrico_on.jpg"]
+        SendPackettoOpenHAB("V06ON", 24, 0)
+        variableVolumetrico6 = 1
+      Else
+        Volumetrico6.Picture = Picture["volumetrico.jpg"]
+        SendPackettoOpenHAB("V06OFF", 24, 1)
+        variableVolumetrico6 = 0
+    Endif
+End
+
+Public Sub Volumetrico7_DblClick()
+    If (variableVolumetrico7 = 0) Then
+        Volumetrico7.Picture = Picture["volumetrico_on.jpg"]
+        SendPackettoOpenHAB("V07ON", 25, 0)
+        variableVolumetrico7 = 1
+      Else
+        Volumetrico7.Picture = Picture["volumetrico.jpg"]
+        SendPackettoOpenHAB("V07OFF", 25, 1)
+        variableVolumetrico7 = 0
+    Endif
+End
+
+Public Sub Volumetrico8_DblClick()
+    If (variableVolumetrico8 = 0) Then
+        Volumetrico8.Picture = Picture["volumetrico_on.jpg"]
+        SendPackettoOpenHAB("V08ON", 26, 0)
+        variableVolumetrico8 = 1
+      Else
+        Volumetrico8.Picture = Picture["volumetrico.jpg"]
+        SendPackettoOpenHAB("V08OFF", 26, 1)
+        variableVolumetrico8 = 0
+    Endif
+End

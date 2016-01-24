@@ -1,0 +1,251 @@
+# Gambas Form File 3.0
+
+{ Form Form
+  MoveScaled(9,10.5,145,103)
+  Text = ("IES PACÍFICO - VirtualHome Piface 2.0 RRL(c)")
+  AutoResize = True
+  { TabStrip1 TabStrip
+    MoveScaled(1,1,142,100)
+    Expand = True
+    AutoResize = True
+    Count = 3
+    Index = 0
+    Text = ("Plano")
+    { PictureBox1 PictureBox
+      MoveScaled(0,1,142,95)
+      Drop = True
+      Picture = Picture["planta_2d_2016.png"]
+      Stretch = True
+    }
+    { out1 PictureBox
+      MoveScaled(89,17,5,5)
+      Picture = Picture["OffLamp.png"]
+      Stretch = True
+    }
+    { out2 PictureBox
+      MoveScaled(65,33,5,5)
+      Picture = Picture["OffLamp.png"]
+      Stretch = True
+    }
+    { switch1 Button
+      MoveScaled(105,20,6,5)
+      Drop = True
+      Picture = Picture["Switch-01.png"]
+    }
+    { switch2 Button
+      MoveScaled(98,40,6,5)
+      Picture = Picture["Switch-01.png"]
+    }
+    { switch3 Button
+      MoveScaled(35,61,6,5)
+      Picture = Picture["Switch-01.png"]
+    }
+    { switch4 Button
+      MoveScaled(81,27,6,5)
+      Picture = Picture["Switch-01.png"]
+    }
+    { switch5 Button
+      MoveScaled(58,31,6,5)
+      Picture = Picture["Switch-01.png"]
+    }
+    { switch6 Button
+      MoveScaled(47,31,6,5)
+      Picture = Picture["Switch-01.png"]
+    }
+    { switch7 Button
+      MoveScaled(51,37,6,5)
+      Picture = Picture["Switch-01.png"]
+    }
+    { switch8 Button
+      MoveScaled(11,31,6,5)
+      Picture = Picture["Switch-01.png"]
+    }
+    { switch9 Button
+      MoveScaled(4,46,6,5)
+      Picture = Picture["Switch-01.png"]
+    }
+    { switch10 Button
+      MoveScaled(4,67,6,5)
+      Picture = Picture["Switch-01.png"]
+    }
+    { out3 PictureBox
+      MoveScaled(46,57,5,5)
+      Picture = Picture["OffLamp.png"]
+      Stretch = True
+    }
+    { out4 PictureBox
+      MoveScaled(18,56,5,5)
+      Picture = Picture["OffLamp.png"]
+      Stretch = True
+    }
+    { out5 PictureBox
+      MoveScaled(57,17,5,5)
+      Picture = Picture["OffLamp.png"]
+      Stretch = True
+    }
+    { out6 PictureBox
+      MoveScaled(13,15,5,5)
+      Picture = Picture["OffLamp.png"]
+      Stretch = True
+    }
+    { out7 PictureBox
+      MoveScaled(81,54,5,5)
+      Picture = Picture["OffLamp.png"]
+      Stretch = True
+    }
+    { out8 PictureBox
+      MoveScaled(80,79,5,5)
+      Picture = Picture["OffLamp.png"]
+      Stretch = True
+    }
+    { out9 PictureBox
+      MoveScaled(117,52,5,5)
+      Picture = Picture["OffLamp.png"]
+      Stretch = True
+    }
+    { persiana1 PictureBox
+      MoveScaled(11,78,17,7)
+      Picture = Picture["persiana_abierta.png"]
+      Stretch = True
+    }
+    { persiana3 PictureBox
+      MoveScaled(106,86,28,7)
+      Picture = Picture["persiana_abierta.png"]
+      Stretch = True
+    }
+    { switch15 Button
+      MoveScaled(55,72,6,5)
+      Picture = Picture["Switch-01.png"]
+    }
+    { switch16 Button
+      MoveScaled(61,72,6,5)
+      Picture = Picture["Switch-01.png"]
+    }
+    { switch11 Button
+      MoveScaled(90,36,6,5)
+      Picture = Picture["Switch-01.png"]
+    }
+    { switch13 Button
+      MoveScaled(24,72,6,5)
+      Picture = Picture["Switch-01.png"]
+    }
+    { switch14 Button
+      MoveScaled(30,72,6,5)
+      Picture = Picture["Switch-01.png"]
+    }
+    { persiana2 PictureBox
+      MoveScaled(41,78,18,7)
+      Picture = Picture["persiana_abierta.png"]
+      Stretch = True
+    }
+    { switch12 Button
+      MoveScaled(98,78,6,5)
+      Picture = Picture["Switch-01.png"]
+    }
+    { switch17 Button
+      MoveScaled(126,79,6,5)
+      Picture = Picture["Switch-01.png"]
+    }
+    { switch18 Button
+      MoveScaled(132,79,6,5)
+      Picture = Picture["Switch-01.png"]
+    }
+    { Volumetrico1 PictureBox
+      MoveScaled(50,10,5,8)
+      Picture = Picture["volumetrico.jpg"]
+      Stretch = True
+    }
+    { Volumetrico6 PictureBox
+      MoveScaled(92,48,5,8)
+      Picture = Picture["volumetrico.jpg"]
+      Stretch = True
+    }
+    { Volumetrico7 PictureBox
+      MoveScaled(60,55,5,8)
+      Picture = Picture["volumetrico.jpg"]
+      Stretch = True
+    }
+    { Volumetrico8 PictureBox
+      MoveScaled(82,9,5,8)
+      Picture = Picture["volumetrico.jpg"]
+      Stretch = True
+    }
+    { Volumetrico4 PictureBox
+      MoveScaled(21,3,5,8)
+      Picture = Picture["volumetrico.jpg"]
+      Stretch = True
+    }
+    { Volumetrico3 PictureBox
+      MoveScaled(91,75,5,8)
+      Picture = Picture["volumetrico.jpg"]
+      Stretch = True
+    }
+    { Volumetrico5 PictureBox
+      MoveScaled(24,30,5,8)
+      Picture = Picture["volumetrico.jpg"]
+      Stretch = True
+    }
+    { Volumetrico2 PictureBox
+      MoveScaled(132,36,5,8)
+      Picture = Picture["volumetrico.jpg"]
+      Stretch = True
+    }
+    Index = 1
+    Text = ("Configuración")
+    { TextArea1 TextArea
+      MoveScaled(70,1,35,54)
+      ReadOnly = True
+    }
+    { Button2 Button
+      MoveScaled(45,11,13,4)
+      Text = ("Start !")
+    }
+    { TextBox1 TextBox
+      MoveScaled(28,8,10,4)
+      Text = ("15432")
+    }
+    { Label2 Label
+      MoveScaled(3,8,23,4)
+      Text = ("VirtualHome Server Port :")
+      Alignment = Align.Right
+    }
+    { Label1 Label
+      MoveScaled(4,3,33,4)
+      Text = ("Configuración de servidores UDP:")
+      Alignment = Align.Center
+    }
+    { Label3 Label
+      MoveScaled(3,13,23,4)
+      Text = ("Openhab Server Port :")
+      Alignment = Align.Right
+    }
+    { OpenhabServerPort TextBox
+      MoveScaled(28,13,10,4)
+      Text = ("15433")
+    }
+    { Label4 Label
+      MoveScaled(3,18,23,4)
+      Text = ("Openhab Server IP :")
+      Alignment = Align.Right
+    }
+    { OpenhabServerIP TextBox
+      MoveScaled(28,18,10,4)
+      Text = ("127.0.0.1")
+    }
+    { modopiface CheckBox
+      MoveScaled(45,16,21,4)
+      Text = ("Activar Modo Piface")
+      Value = CheckBox.True
+    }
+    Index = 2
+    Text = ("Extra")
+    { Button1 Button
+      MoveScaled(2,2,30,4)
+      Text = ("New UDP Client window")
+    }
+    Index = 0
+  }
+  { UDPServer #UdpSocket
+    #MoveScaled(5,90)
+  }
+}

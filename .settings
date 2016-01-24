@@ -1,0 +1,17 @@
+[Breakpoints]
+Count=0
+
+[DebugWindow]
+Count=0
+
+[OpenFile]
+Active=1
+File[1]=".src/FrmServer.form"
+File[2]=".src/FrmClient.form"
+File[3]=".src/FrmServer.class:425.0"
+File[4]=".src/FrmClient.class:36.0"
+Count=4
+
+[Watches]
+Count=0
+
