@@ -1,0 +1,10 @@
+VirtualHomePiface is an application to simulate a house to be controlled by OpenHAB.
+It is a “Gambas3” application that runs over linux. I developed it in Ubuntu 14.04.
+It implements two protocols. You can choose which one do you want to use.
+The first one is an emulation of a Piface+RaspberryPI connected to Lamps, Blinds, Push buttons and  volumetric sensors. It use a lot of items more than the piface can manage, but it is not a problem to the binding manage IN/OUTs far the limit of 8 items the piface can manage.
+The second one is a custom protocol based on UDP packets from and to OpenHAB. It use ASCII readable messages to switch ON/OFF Lamps, move UP/DOWN the blinds, know that a push button has benn pressed or a volumetric sensor is active.
+VirtualHomePort is the listening port of the virtual piface, OpenHAB port is the monitor port as is described by the help of the binding in the wiki.
+I publish the code to be used for everyone could be interested in test the possibilities of openHAB as I do with my students in my College. They are students of the “Ciclo Formativo de Grado Superior de Sistemas de Telecomunicación e Informáticos” at “IES Pacífico” in Madrid, SPAIN.
+http://iespacifico.duckdns.org/moodle/
+I will be very gratefull if someone improve the software integrating some one other protocol compatible with openHAB or other controller for home automation.
+Thanks for listening to me, and enjoy yourself the software and , please, give some feedback.
